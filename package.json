@@ -1,0 +1,24 @@
+{
+  "name": "cognito-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "devDependencies": {
+    "@rollup/plugin-commonjs": "^22.0.0",
+    "elm": "^0.19.1-5",
+    "elm-live": "^4.0.2",
+    "rollup": "^2.75.6",
+    "typescript": "^4.7.3"
+  },
+  "scripts": {
+    "copy_cognito_js": "cp node_modules/amazon-cognito-identity-js/dist/amazon-cognito-identity.min.js docs",
+    "copy_resources": "rsync -av --exclude 'entry.ts' resources/* docs/",
+    "live": "yarn copy_resources && yarn copy_cognito_js && yarn tsc && yarn rollup && elm-live src/Main.elm --open --dir=docs --proxy-prefix=/api --proxy-host=http://localhost:8080/api --port=3000 -- --output=docs/main.js --debug",
+    "build": "yarn tsc && yarn rollup && elm make src/Main.elm --optimize --output docs/main.js && yarn copy_resources",
+    "rollup": "rollup -c",
+    "tsc": "tsc"
+  },
+  "dependencies": {
+    "amazon-cognito-identity-js": "^5.2.9"
+  }
+}
